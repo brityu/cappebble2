@@ -2,9 +2,36 @@
 title: "Capstone Markdown"
 output: html_document
 ---
-Magandang araw, Nuno.
+LIBRARIES
+```{r setup, include=FALSE}
+library(tidyverse)
+install.packages("ggubr")
+library(ggpubr)
+install.packages("ggubr")
+library(rstatix)
+```
 
-This is le official r markdown for le project capstone 2021
+1. TEST FOR NORMALITY
 
-Bata bata paanu u ginAwaH ?!
+shapiro.test(data$column)
+
+if: p > 0.05, data is normal
+    p < 0.05, data is non normal
+    
+2. IF TEST IS NORMAL, TEST FOR HOMOGENEITY
+
+Perform this test only if the parametric test requires homogenous data
+
+var.test(y variable ~ x variable, data = data) ---> requires data transformation
+
+3. PERFORM STATISTICAL TEST
+
+Bitaw bata, search lang unsaon ang data sa kada stat imo gamiton. Naay uban required nga
+itransform ang data. If naa kay questions example unsa nga stat gamiton if categorical vs continuous
+or whatever pwede ra ka mochat or visit ni:
+
+https://www.scribbr.com/statistics/statistical-tests/
+
+After nimo read ani pwede ra nimo ni iremove
+
 
