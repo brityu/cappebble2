@@ -1,3 +1,1 @@
-# Magandang araw Nuno
-
-# Put thy scripts here peasant
+# Bata bata paanu u qinaWah ?~
