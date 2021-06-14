@@ -1,0 +1,8 @@
+---
+title: "Capstone Markdown"
+output: html_document
+---
+Magandang araw, Nuno.
+
+This is le official r markdown for le project capstone 2021
+
