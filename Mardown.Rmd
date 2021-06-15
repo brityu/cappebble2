@@ -36,3 +36,15 @@ After nimo read ani pwede ra nimo ni iremove
 
 
 HAHAHA magic
+
+IMPORT DATA
+```{r}
+honey <- read.csv("./Honey_v03.csv")
+honey
+```
+
+YEAR VS. PROD
+```{r}
+year_plot <- ggplot(honey, aes(year, totalprod)) + geom_point()
+year_plot
+```
