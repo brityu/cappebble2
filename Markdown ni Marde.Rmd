@@ -1,5 +1,0 @@
----
-title: "Markdown ni Marde"
-output: html_document
----
-
