@@ -1,0 +1,23 @@
+---
+title: "Markdown ni Marde"
+output: html_document
+---
+
+```{r}
+yeardata <- select(honey, totalprod, year, Region)
+yeardata$totalprod <- log(yeardata$totalprod)
+SE <- Rmisc::summarySE(data = yeardata, measurevar = "totalprod", groupvars = c("year", "Region"))
+yeardata$year <- as.factor(yeardata$year)
+pd <- position_dodge(0.1)
+na.omit(SE)
+
+yearplot <- ggplot(SE, aes(x = year, y = totalprod, colour = "red", group = 1)) + 
+    geom_errorbar(aes(ymin = SE$totalprod - ci, ymax = SE$totalprod + ci), 
+                  width=.1, position = pd) +
+    geom_line(position = pd) +
+    geom_point(position = pd, size = 1, shape = 21, fill = "white") +
+ theme(text=element_text(size = 11,  family = "serif"),
+       axis.ticks.x = element_blank()) +
+  theme(legend.position = "none") + facet_wrap(~Region);
+yearplot
+```
