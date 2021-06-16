@@ -1,0 +1,54 @@
+---
+title: "Markdown ni Marde"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(Rmisc)
+library(rstatix)
+```
+
+PLOT BY YEAR
+```{r}
+honey <- read_csv("./Honey_v03.csv")
+
+yeardata <- select(honey, year, Region, totalprod)
+yeardata$totalprod <- log(yeardata$totalprod)
+yearSE <- summarySE(yeardata, measurevar = "totalprod", groupvars = c("Region", "year"))
+pd <- position_dodge(0.1)
+
+ggplot(yearSE, aes(x = year, y = totalprod, color = "red", group = 1)) + 
+    geom_errorbar(aes(ymin = yearSE$totalprod - ci, ymax = yearSE$totalprod + ci), 
+                  width=.1, position = pd, alpha = 0.4) +
+    geom_line(position = pd) +
+    geom_point(position = pd, size = 2, shape = 21, fill = "white") +
+  facet_wrap(.~Region) + 
+  labs(title = "Total Production", subtitle = "1991 - 2017", y = "log(Total Production)",
+       x = "Year") +
+  theme(legend.position = "none")
+```
+
+```{r}
+honey <- read_csv("./Honey_v03.csv")
+
+costdata <- select(honey, year, Region, prodvalue)
+costdata$prodvalue <- log(costdata$prodvalue)
+costSE <- summarySE(costdata, measurevar = "prodvalue", groupvars = c("Region", "year"))
+pd <- position_dodge(0.1)
+
+ggplot(costSE, aes(x = year, y = prodvalue, color = "red", group = 1)) + 
+    geom_errorbar(aes(ymin = costSE$prodvalue - ci, ymax = costSE$prodvalue + ci), 
+                  width=.1, position = pd, alpha = 0.4) +
+    geom_line(position = pd) +
+    geom_point(position = pd, size = 2, shape = 21, fill = "white") +
+  facet_wrap(.~Region) + 
+  labs(title = "Production Value", subtitle = "1991 - 2017", y = "Production Value",
+       x = "Year") +
+  theme(legend.position = "none")
+```
+
+```{r}
+ggplot(honey, aes(x = log(numcol), y = yieldpercol)) + geom_point() + 
+  facet_grid(.~ Region) + geom_smooth(method = lm)
+```
