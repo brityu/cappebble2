@@ -1,0 +1,47 @@
+---
+title: "Markdown para Report Paper"
+output: html_document
+---
+
+INTRODUCTION
+
+General research question: How do Neonic pesticides affect the production of honey from honeybee colonies?
+
+Objectives:
+* to analyze the relationship between the total production of honey with use of Neonic pesticides in four USA regions;
+
+* to compare the effect of different types of neonics, specifically clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid, to total honey production; and 
+
+* to establish the trend of total honey production from 1991 to 2017
+
+DATA
+
+The dataset was accessed online from URL: https://www.kaggle.com/kevinzmith/honey-with-neonic-pesticide, entitled "Honeybees and Neonic Pesticides". Variables involving honey production is from the US Department of Agriculture (USDA), namely, number of honey-producing colonies, honey yield per colony, total production, stocks, price per lb, and production value. On the other hand, data concenrning use of neonic pesticides from all over US is from the United States Geological Survey (USGS); the variables include total and individual amounts of neonic types 
+(clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid). Neonic data is collected by country, state, region, and year. Kevin Zmith classified the state into four regions: South, West, Midwest, and Northeast using US Census.
+
+
+
+* where it came from
+* how it was collected
+* what are the cases
+* what are the variables
+
+```{r}
+honey.csv <- read.csv("Honey_v03.csv")
+glimpse(honey.csv)
+```
+
+DATA ANALYSIS:
+
+* outcome and predictor variables we use to answer the question
+* comparison groups that we use (if applicable)
+* very preliminary exploratory data analysis
+--> summary statistics
+--> visualizations
+--> + explanation on how they help you learn more about your data
+
+* the methods tha t you believe will be useful in answering your question(s)
+
+* What results from these specific statistical methods are needed to support your hypothesized answer?
+
+* Each section should be no more than 1 page (excluding figures). You can check  a print preview to confirm length

@@ -1,0 +1,119 @@
+---
+title: "Capstone Markdown"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+```
+
+PLOT 1. neonic vs. total.prod (color = region)
+```{r}
+honey.csv <- read.csv("Honey_v03.csv")
+neonicvtotalprod <- honey.csv %>%
+  group_by(Region) 
+ggplot(data = neonicvtotalprod, mapping = aes(x = log(nAllNeonic), y = log(totalprod), col = Region)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs (x = "Total Neonic (kg)", y = "Total Production (lb)", title = " Bee Honey Production under Neonic Pesticide by Region")
+```
+
+
+PLOT 2. neonic type vs. total prod (color = region)
+
+
+
+```{r}
+#neonictype <- honey.csv %>%
+ # gather(key = c(nCLOTHIANIDIN, nIMIDACLOPRID, nTHIAMETHOXAM, nACETAMIPRID, nTHIACLOPRID), value = value) %>%
+#  print()
+
+
+
+neonictype <- honey.csv %>%
+  pivot_longer(cols = c(12,13,14,15,16), names_to = "neonictype", values_to = "x")
+a <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nCLOTHIANIDIN), y = log(totalprod), col = Region)) + geom_point() + 
+  labs(x = "Clothianidin (kg)", y = "Total Production (lb)") +
+  geom_smooth(method = "lm", se = FALSE)
+
+b <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nIMIDACLOPRID), y = log(totalprod), col = Region)) + geom_point () +
+  labs(x = "Imidacloprid (kg)", y = "Total Production (lb)") +
+  geom_smooth(method = "lm", se = FALSE)
+
+c <-  ggplot(data = neonicvtotalprod, mapping = aes(x = log(nTHIAMETHOXAM), y = log(totalprod), col = Region)) + geom_point() +
+  labs(x = "Thiamethoxam (kg)", y = "Total Production (lb)") +
+  geom_smooth(method = "lm", se = FALSE)
+
+d <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nACETAMIPRID), y = log(totalprod), col = Region)) + geom_point() +
+  labs(x = "Acetamiprid (kg)", y = "Total Production (lb)") +
+  geom_smooth(method = "lm", se = FALSE)
+
+e <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nTHIACLOPRID), y = log(totalprod), col = Region)) + geom_point() +
+  labs(x = "Thiacloprid (kg)", y = "Total Production (lb)") +
+  geom_smooth(method = "lm", se = FALSE)
+
+
+library(cowplot)
+library(ggpubr)
+library(grid)
+ggarrange(a, b, c, d, e + rremove("x.text"),
+ncol = 2, nrow = 3) #+ grid_arrange() +
+  #labs(x = "Neocin Type") #not a facetgrid pero similar na pero looking for ways na ma han ay sha like
+# one label for y-axis
+# only one area for the legend
+# put general labels for title, x, and y - axis
+```
+
+
+
+
+
+
+LIBRARIES
+```{r setup, include=FALSE}
+library(tidyverse)
+install.packages("ggubr")
+library(ggpubr)
+install.packages("ggubr")
+library(rstatix)
+```
+
+1. TEST FOR NORMALITY
+
+shapiro.test(data$column)
+
+if: p > 0.05, data is normal
+    p < 0.05, data is non normal
+    
+2. IF TEST IS NORMAL, TEST FOR HOMOGENEITY
+
+Perform this test only if the parametric test requires homogenous data
+
+var.test(y variable ~ x variable, data = data) ---> requires data transformation
+
+3. PERFORM STATISTICAL TEST
+
+Bitaw bata, search lang unsaon ang data sa kada stat imo gamiton. Naay uban required nga
+itransform ang data. If naa kay questions example unsa nga stat gamiton if categorical vs continuous
+or whatever pwede ra ka mochat or visit ni:
+
+https://www.scribbr.com/statistics/statistical-tests/
+
+After nimo read ani pwede ra nimo ni iremove
+
+
+HAHAHA magic
+
+IMPORT DATA
+```{r}
+honey <- read.csv("./Honey_v03.csv")
+honey
+```
+
+YEAR VS. PROD
+```{r}
+year_plot <- ggplot(honey, aes(year, totalprod)) + geom_point()
+year_plot
+```
