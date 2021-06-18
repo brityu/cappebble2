@@ -18,7 +18,7 @@ yeardata$totalprod <- log(yeardata$totalprod)
 yearSE <- summarySE(yeardata, measurevar = "totalprod", groupvars = c("Region", "year"))
 pd <- position_dodge(0.1)
 
-ggplot(yearSE, aes(x = year, y = totalprod, color = "red", group = 1)) + 
+yearplot <- ggplot(yearSE, aes(x = year, y = totalprod, color = "red", group = 1)) + 
     geom_errorbar(aes(ymin = yearSE$totalprod - ci, ymax = yearSE$totalprod + ci), 
                   width=.1, position = pd, alpha = 0.4) +
     geom_line(position = pd) +
@@ -27,7 +27,15 @@ ggplot(yearSE, aes(x = year, y = totalprod, color = "red", group = 1)) +
   labs(title = "Total Production", subtitle = "1991 - 2017", y = "log(Total Production)",
        x = "Year") +
   theme(legend.position = "none")
+yearplot
+
+neonicyear <- ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() + facet_grid(.~ Region)
 ```
+
+Year
+
+Total production of honey throughout 1991 to 2017 is visualized for four regions. Midwest shows the highest production throughout the years, while Northeast shows the lowest. Statistical analysis for any significant difference between years was impossible due to the absence of data from select states in each region which prevents pairwise comparison of repeated measures. However, the graph shows that despite the growing industry of Neonic production since 2003, total production of honey from bee colonies have been fluctuating in the Midwest and the West even before. Furthermore, Northeastern and Southern total production have been relatively steady for years. This could suggest that Neonic production does not necessarily induce an effect on total production of honey as a measure of the bee population. Other factors must be at play that maintains the production in the Northeast and the South, while there is unsteady decline in the Midwest and the West.
+Interestingly, the Midwest remains the highest producer of Neonics followed by the south. Why the midwest still remains the highest producer of honey could be explained by biological and geographical factors which are beyond the scope of the study.  
 
 ```{r}
 honey <- read_csv("./Honey_v03.csv")
@@ -64,4 +72,8 @@ byneonicB
 ggplot(byneonicB, aes(x = logamount, y = logtotalprod, color = Type)) + 
   geom_point() + facet_grid(.~ Region) + 
   geom_smooth(method = lm, se = FALSE)
+```
+
+```{r}
+ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() + facet_grid(.~ Region)
 ```
