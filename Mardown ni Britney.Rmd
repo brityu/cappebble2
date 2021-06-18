@@ -28,56 +28,47 @@ ggplot(data = neonicvtotalprod, mapping = aes(x = nAllNeonic, y = log(totalprod)
 
 plot1.mod <- lm(data = honey.csv, formula = log(totalprod) ~ nAllNeonic)
 summary(plot1.mod)
+
+#Since there is a significant relationship in total production between
+#the four regions (insert p-value), we perform post-hoc analysis
+
+# library(multcomp)
+
+
+#post_hoc_honey <- glht()
+
+
+# nonparametric counterpart of anova for independent samples
+#nonparametric post hoc test for unpaired or independent (usually mann whitney)
 ```
 
 
 PLOT 2. neonic type vs. total prod (color = region)
 
 
-
 ```{r}
-#neonictype <- honey.csv %>%
- # gather(key = c(nCLOTHIANIDIN, nIMIDACLOPRID, nTHIAMETHOXAM, nACETAMIPRID, nTHIACLOPRID), value = value) %>%
-#  print()
+byneonic <- select(honey.csv, totalprod, 12:16, Region); byneonic
+byneonic <- na.omit(byneonic)
+byneonicA <- gather(byneonic, "Type", "Amount", 2:6)
+byneonicB <- byneonicA %>%
+  mutate(logtotalprod = log(totalprod), logamount = log(Amount))
+byneonicB
 
+ggplot(byneonicB, aes(x = logamount, y = logtotalprod, color = Type)) + 
+  geom_point() + facet_grid(.~ Region) + 
+   labs(Title = "Effects of different Neonic types to honey production by Region", x = "Amount of Neonic (kg)", y = "Total Honey Production (lb)") +
+   scale_fill_discrete(name = "Type", labels = c("Acetamiprid", "Clothianidin", "Imidacloprid", "Thiacloprid", "Thiamethoxam"))  +
+  geom_smooth(method = lm, se = FALSE)
 
-
-neonictype <- honey.csv %>%
-  pivot_longer(cols = c(12,13,14,15,16), names_to = "neonictype", values_to = "x")
-a <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nCLOTHIANIDIN), y = log(totalprod), col = Region)) + geom_point() + 
-  labs(x = "Clothianidin (kg)", y = "Total Production (lb)") +
-  geom_smooth(method = "lm", se = FALSE)
-
-b <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nIMIDACLOPRID), y = log(totalprod), col = Region)) + geom_point () +
-  labs(x = "Imidacloprid (kg)", y = "Total Production (lb)") +
-  geom_smooth(method = "lm", se = FALSE)
-
-c <-  ggplot(data = neonicvtotalprod, mapping = aes(x = log(nTHIAMETHOXAM), y = log(totalprod), col = Region)) + geom_point() +
-  labs(x = "Thiamethoxam (kg)", y = "Total Production (lb)") +
-  geom_smooth(method = "lm", se = FALSE)
-
-d <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nACETAMIPRID), y = log(totalprod), col = Region)) + geom_point() +
-  labs(x = "Acetamiprid (kg)", y = "Total Production (lb)") +
-  geom_smooth(method = "lm", se = FALSE)
-
-e <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nTHIACLOPRID), y = log(totalprod), col = Region)) + geom_point() +
-  labs(x = "Thiacloprid (kg)", y = "Total Production (lb)") +
-  geom_smooth(method = "lm", se = FALSE)
-
-
-library(cowplot)
-library(ggpubr)
-library(grid)
-ggarrange(a, b, c, d, e + rremove("x.text"),
-ncol = 2, nrow = 3) #+ grid_arrange() +
-  #labs(x = "Neocin Type") #not a facetgrid pero similar na pero looking for ways na ma han ay sha like
-# one label for y-axis
-# only one area for the legend
-# put general labels for title, x, and y - axis
+#tagsatagsa ug lm sa mga lines (5 x 4 regions) --> to prove statistical significance 
+ #use method = spearman
 ```
 
+```{r}
+#stat:
 
 
+```
 
 
 
