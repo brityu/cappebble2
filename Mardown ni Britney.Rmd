@@ -27,8 +27,8 @@ ggplot(data = neonicvtotalprod, mapping = aes(x = nAllNeonic, y = log(totalprod)
 
 
 
-plot1.mod <- lm(data = honey.csv, formula = log(totalprod) ~ nAllNeonic)
-summary(plot1.mod)
+#plot1.mod <- lm(data = honey.csv, formula = log(totalprod) ~ nAllNeonic)
+#summary(plot1.mod)
 
 #Since there is a significant relationship in total production between
 #the four regions (insert p-value), we perform post-hoc analysis
@@ -89,9 +89,116 @@ ggplot(byneonicB, aes(x = logamount, y = logtotalprod, color = Type)) +
    scale_fill_discrete(name = "Type", labels = c("Acetamiprid", "Clothianidin", "Imidacloprid", "Thiacloprid", "Thiamethoxam"))  +
   geom_smooth(method = lm, se = FALSE)
 
-#tagsatagsa ug lm sa mga lines (5 x 4 regions) --> to prove statistical significance 
- #use method = spearman
-```
+#filter dataset by region
+midwest <- byneonic %>%
+  filter(Region == "Midwest")
+
+northeast <- byneonic %>%
+  filter(Region == "Northeast")
+
+south <- byneonic %>%
+  filter(Region == "South")
+
+west <- byneonic %>%
+  filter(Region == "West")
+
+#Correlation test per neocin type per region
+
+acemid.cor <- cor.test(midwest$totalprod, midwest$Acetamiprid, method = "spearman", exact = FALSE)
+acemid.cor
+
+clomid.cor <- cor.test(midwest$totalprod, midwest$Clothianidin, method = "spearman", exact = FALSE)
+clomid.cor
+
+
+midmid.cor <- cor.test(midwest$totalprod, midwest$Midacloprid, method = "spearman", exact = FALSE)
+midmid.cor
+
+
+thiamethid.cor <- cor.test(midwest$totalprod, midwest$Thiamethoxam, method = "spearman", exact = FALSE)
+thiamethid.cor
+
+thiaclomid.cor <- cor.test(midwest$totalprod, midwest$Thiacloprid, method = "spearman", exact = FALSE)
+thiaclomid.cor
+
+
+#northeast
+
+acene.cor <- cor.test(northeast$totalprod, northeast$Acetamiprid, method = "spearman", exact = FALSE)
+acene.cor
+
+clone.cor <- cor.test(northeast$totalprod, northeast$Clothianidin, method = "spearman", exact = FALSE)
+clone.cor
+
+
+midne.cor <- cor.test(northeast$totalprod, northeast$Midacloprid, method = "spearman", exact = FALSE)
+midne.cor
+
+
+thiamethne.cor <- cor.test(northeast$totalprod, northeast$Thiamethoxam, method = "spearman", exact = FALSE)
+thiamethne.cor
+
+
+thiaclone.cor <- cor.test(northeast$totalprod, northeast$Thiacloprid, method = "spearman", exact = FALSE)
+thiaclone.cor
+
+#south
+
+acesouth.cor <- cor.test(south$totalprod, south$Acetamiprid, method = "spearman", exact = FALSE)
+acesouth.cor
+
+closouth.cor <- cor.test(south$totalprod, south$Clothianidin, method = "spearman", exact = FALSE)
+closouth.cor
+
+
+midsouth.cor <- cor.test(south$totalprod, south$Midacloprid, method = "spearman", exact = FALSE)
+midsouth.cor
+
+
+thiamethsouth.cor <- cor.test(south$totalprod, south$Thiamethoxam, method = "spearman", exact = FALSE)
+thiamethsouth.cor
+
+
+thiaclosouth.cor <- cor.test(south$totalprod, south$Thiacloprid, method = "spearman", exact = FALSE)
+thiaclosouth.cor
+
+#west
+
+acewest.cor <- cor.test(west$totalprod, west$Acetamiprid, method = "spearman", exact = FALSE)
+acewest.cor
+
+clowest.cor <- cor.test(west$totalprod, west$Clothianidin, method = "spearman", exact = FALSE)
+clowest.cor
+
+
+midwest.cor <- cor.test(west$totalprod, west$Midacloprid, method = "spearman", exact = FALSE)
+midwest.cor
+
+
+thiamethwest.cor <- cor.test(west$totalprod, west$Thiamethoxam, method = "spearman", exact = FALSE)
+thiamethwest.cor
+
+
+thiaclowest.cor <- cor.test(west$totalprod, west$Thiacloprid, method = "spearman", exact = FALSE)
+thiaclowest.cor
+
+#making dataframe of the significance of statistical results
+Region <- c("Midwest", "Midwest", "Midwest", "Midwest", "Midwest", "Northeast", "Northeast", "Northeast", "Northeast","Northeast","South", "South", "South", "South", "South", "West", "West", "West", "West","West")
+NeonicType <- c("Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid")
+p.value <- c(acemid.cor$p.value, clomid.cor$p.value, midmid.cor$p.value, thiamethid.cor$p.value, thiaclomid.cor$p.value, acene.cor$p.value, clone.cor$p.value, midne.cor$p.value, thiamethne.cor$p.value, thiaclone.cor$p.value, acesouth.cor$p.value, closouth.cor$p.value, midsouth.cor$p.value, thiamethsouth.cor$p.value, thiaclosouth.cor$p.value, acewest.cor$p.value, clowest.cor$p.value, midwest.cor$p.value, thiamethsouth.cor$p.value, thiaclowest.cor$p.value)
+
+rho <- c(-0.3406599, -0.178460 ,-0.04370683 ,-0.1223294 ,-0.2207321  ,0.178998
+         ,0.1504854 ,0.2958545 ,0.178656 ,0.2972762, 0.06931884, -0.03242255,
+         0.5089368, 0.1946103, -0.2852726, 0.06372726, -0.07198862 , 0.3833301,
+         0.1946103, 0.1439576)
+
+1.533013e-08 < 0.05
+
+significance <- c("s", "s", "ns", "s", "s", "ns", "s", "ns", "s", "ns","ns", "s", "s", "s", "ns", "ns", "s", "s", "s")
+  
+neonic.type.df <- cbind(Region, NeonicType, p.value, rho, significance)
+neonic.type.df <- as.data.frame(neonic.typee)
+View((neonic.type.df))
 
 ```{r}
 #stat:
