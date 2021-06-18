@@ -7,6 +7,7 @@ output: html_document
 library(dplyr)
 library(tidyverse)
 library(ggplot2)
+library(stats)
 ```
 
 PLOT 1. neonic vs. total.prod (color = region)
@@ -38,10 +39,38 @@ summary(plot1.mod)
 #post_hoc_honey <- glht()
 
 
-# nonparametric counterpart of anova for independent samples
-#nonparametric post hoc test for unpaired or independent (usually mann whitney)
+# STATISTICAL TEST, CORRELATION PER REGION
+neonicstatmw <- honey %>%
+  filter(Region == "Midwest")
+cormw <- cor.test(neonicstatmw$totalprod, neonicstatmw$nAllNeonic, method = "spearman", exact = FALSE)
+cormw
+
+neonicstatwest <- honey %>%
+  filter(Region == "West")
+corw <- cor.test(neonicstatwest$totalprod, neonicstatwest$nAllNeonic, method = "spearman", exact = FALSE)
+corw
+
+neonicstatne <- honey %>%
+  filter(Region == "Northeast")
+corne <- cor.test(neonicstatne$totalprod, neonicstatne$nAllNeonic, method = "spearman", exact = FALSE)
+corne
+
+neonicstatsouth <- honey %>%
+  filter(Region == "South")
+cors <- cor.test(neonicstatsouth$totalprod, neonicstatsouth$nAllNeonic, method = "spearman", exact = FALSE)
+cors
+
+# MAKING A DATAFRAME OF STATISTICAL RESULTS
+Region <- c("Midwest", "West", "Northeast", "South")
+p.value <- c(cormw$p.value, corw$p.value, corne$p.value, cors$p.value)
+rho <- c(-0.1027632, 0.3549792, 0.3510381, 0.4034019)
+significance <- c("ns", "*", "*", "*")
+
+allneonic <- cbind(Region, p.value, rho, significance)
+allneonic <- data.frame(allneonic); allneonic
 ```
 
+HELLO BATA, CHECK AKONG STAT GIBUHAT PARA DI NA KA MAGLISOD PERFORM SA IMOHA
 
 PLOT 2. neonic type vs. total prod (color = region)
 

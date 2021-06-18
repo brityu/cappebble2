@@ -7,6 +7,7 @@ output: html_document
 library(tidyverse)
 library(Rmisc)
 library(rstatix)
+library(ggpubr)
 ```
 
 PLOT BY YEAR
@@ -24,18 +25,26 @@ yearplot <- ggplot(yearSE, aes(x = year, y = totalprod, color = "red", group = 1
     geom_line(position = pd) +
     geom_point(position = pd, size = 2, shape = 21, fill = "white") +
   facet_wrap(.~Region) + 
-  labs(title = "Total Production", subtitle = "1991 - 2017", y = "log(Total Production)",
+  labs(title = "A. Total Production", 
+       subtitle = "1991 - 2017", 
+       y = "log(Total Honey Production)",
        x = "Year") +
   theme(legend.position = "none")
-yearplot
 
-neonicyear <- ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() + facet_grid(.~ Region)
+neonicyear <- ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() + 
+  facet_wrap(.~ Region) + labs(title = "B. Neonic Production",
+                               subtitle = "1991 - 2017",
+                               y = "Total Neonic Production",
+                               x = "Year")
+
+ggarrange(yearplot, neonicyear, ncol = 2)
 ```
 
 Year
 
 Total production of honey throughout 1991 to 2017 is visualized for four regions. Midwest shows the highest production throughout the years, while Northeast shows the lowest. Statistical analysis for any significant difference between years was impossible due to the absence of data from select states in each region which prevents pairwise comparison of repeated measures. However, the graph shows that despite the growing industry of Neonic production since 2003, total production of honey from bee colonies have been fluctuating in the Midwest and the West even before. Furthermore, Northeastern and Southern total production have been relatively steady for years. This could suggest that Neonic production does not necessarily induce an effect on total production of honey as a measure of the bee population. Other factors must be at play that maintains the production in the Northeast and the South, while there is unsteady decline in the Midwest and the West.
-Interestingly, the Midwest remains the highest producer of Neonics followed by the south. Why the midwest still remains the highest producer of honey could be explained by biological and geographical factors which are beyond the scope of the study.  
+Interestingly, the Midwest remains the highest producer of Neonics followed by the south. Why the midwest still remains the highest producer of honey despite the high production of Neonics could perhaps be explained by biological and geographical factors which are beyond the scope of the study.
+Without the use of statistical tests to point out the significance of differences in total production of honey throughout the years, we cannot conclude for sure whether the use of Neonics have a relationship with total production from 1991 to 2017.
 
 ```{r}
 honey <- read_csv("./Honey_v03.csv")
