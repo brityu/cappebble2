@@ -12,12 +12,22 @@ library(ggplot2)
 PLOT 1. neonic vs. total.prod (color = region)
 ```{r}
 honey.csv <- read.csv("Honey_v03.csv")
+
+
 neonicvtotalprod <- honey.csv %>%
   group_by(Region) 
-ggplot(data = neonicvtotalprod, mapping = aes(x = log(nAllNeonic), y = log(totalprod), col = Region)) +
+
+
+ggplot(data = neonicvtotalprod, mapping = aes(x = nAllNeonic, y = log(totalprod), group = Region)) +
+  facet_grid(.~ Region) +
   geom_point() +
   geom_smooth(method = "lm", se = FALSE) +
   labs (x = "Total Neonic (kg)", y = "Total Production (lb)", title = " Bee Honey Production under Neonic Pesticide by Region")
+
+
+
+plot1.mod <- lm(data = honey.csv, formula = log(totalprod) ~ nAllNeonic)
+summary(plot1.mod)
 ```
 
 
