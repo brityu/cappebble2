@@ -52,3 +52,16 @@ ggplot(costSE, aes(x = year, y = prodvalue, color = "red", group = 1)) +
 ggplot(honey, aes(x = log(numcol), y = yieldpercol)) + geom_point() + 
   facet_grid(.~ Region) + geom_smooth(method = lm)
 ```
+
+```{r}
+byneonic <- select(honey, totalprod, 12:16, Region); byneonic
+byneonic <- na.omit(byneonic)
+byneonicA <- gather(byneonic, "Type", "Amount", 2:6)
+byneonicB <- byneonicA %>%
+  mutate(logtotalprod = log(totalprod), logamount = log(Amount))
+byneonicB
+
+ggplot(byneonicB, aes(x = logamount, y = logtotalprod, color = Type)) + 
+  geom_point() + facet_grid(.~ Region) + 
+  geom_smooth(method = lm, se = FALSE)
+```
