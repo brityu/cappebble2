@@ -70,7 +70,7 @@ allneonic <- cbind(Region, p.value, rho, significance)
 allneonic <- data.frame(allneonic); allneonic
 ```
 
-HELLO BATA, CHECK AKONG STAT GIBUHAT PARA DI NA KA MAGLISOD PERFORM SA IMOHA
+HELLO BATA, CHECK AKONG STAT GIBUHAT PARA DI NA KA MAGLISOD PERFORM SA IMOHA THANK U MARDS HUHU
 
 PLOT 2. neonic type vs. total prod (color = region)
 
@@ -200,8 +200,6 @@ neonic.type.df <- cbind(Region, NeonicType, p.value, rho, significance)
 neonic.type.df <- as.data.frame(neonic.typee)
 View((neonic.type.df))
 
-```{r}
-#stat:
 
 
 ```
