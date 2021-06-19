@@ -109,7 +109,18 @@ According to the USGS data, there are fives types of neonics used in the US
 States, namely, clothianidin, imidacloprid, thiamethoxam, acetamiprid,
 thaicloprid. To know what neonic type significantly contributes to the changes
 in the total honey production, we visualized and analyzed their relationship
-using the same procedure we used for the first analysis.
+using the same procedure we used for the first analysis. We cannot test for
+significant relationship between regions because what takes place in one region
+is independent to the other.
+
+The amount of thiamethoxam neonic pesticide is statistically significant to the
+total honey production in all four regions, out of all the other neonics. We 
+cannot be certain to the possible reason for the variation, but there are
+two possible hypotheses for testing. The first hypothesis involves testing
+for the lethality of all neonics. Second, we can test for different percentage
+of neonic types to the total neonic levels. The significance levels may have been
+affected by the non-uniformity of the data; some neonic types were present at 
+high levels, while some are not.
 
 
 ```{r}
