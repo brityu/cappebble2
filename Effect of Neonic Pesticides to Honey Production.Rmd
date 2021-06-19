@@ -8,6 +8,7 @@ INTRODUCTION
 In this report, we intend to investigate what factors affect total production of honey across four regions (Midwest, West, Northeast, and South) in the USA. Total production of honey is the average yield per colony multiplied by the number of colonies present in the region. We used the total production of honey as a measurement of bee population in the assumption that higher total honey production corresponds to higher bee population.
 
 At the end of this data analysis, we aim to:
+
 * analyze the relationship between the total production of honey with use of Neonic pesticides in four USA regions;
 
 * compare the effect of different types of neonics, specifically clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid, to total honey production; and 
@@ -24,6 +25,7 @@ The dataset was accessed online from URL: https://www.kaggle.com/kevinzmith/hone
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(ggpubr)
 
 honey.csv <- read.csv("Honey_v03.csv")
 glimpse(honey.csv)
@@ -233,6 +235,82 @@ neonic.type.df <- as.data.frame(neonic.type.df)
 View((neonic.type.df))
 
 ```
+
+
+Total production of honey throughout 1991 to 2017 is visualized for four regions. Midwest shows the highest production throughout the years, while Northeast shows the lowest. Statistical analysis for any significant difference between years was impossible due to the absence of data from select states in each region which prevents pairwise comparison of repeated measures. However, the graph shows that despite the growing industry of Neonic production since 2003, total production of honey from bee colonies have been fluctuating in the Midwest and the West even before. Furthermore, Northeastern and Southern total production have been relatively steady for years. This could suggest that Neonic production does not necessarily induce an effect on total production of honey as a measure of the bee population. Other factors must be at play that maintains the production in the Northeast and the South, while there is unsteady decline in the Midwest and the West.
+Interestingly, the Midwest remains the highest producer of Neonics followed by the south. Why the midwest still remains the highest producer of honey despite the high production of Neonics could perhaps be explained by biological and geographical factors which are beyond the scope of the study.
+Without the use of statistical tests to point out the significance of differences in total production of honey throughout the years, we cannot conclude for sure whether the use of Neonics have a relationship with total production from 1991 to 2017.
+
+```{r}
+honey <- read_csv("./Honey_v03.csv")
+
+yeardata <- select(honey, year, Region, totalprod)
+yeardata$totalprod <- log(yeardata$totalprod)
+yearSE <- summarySE(yeardata, measurevar = "totalprod", groupvars = c("Region", "year"))
+pd <- position_dodge(0.1)
+
+yearplot <- ggplot(yearSE, aes(x = year, y = totalprod, color = "red", group = 1)) + 
+    geom_errorbar(aes(ymin = yearSE$totalprod - ci, ymax = yearSE$totalprod + ci), 
+                  width=.1, position = pd, alpha = 0.4) +
+    geom_line(position = pd) +
+    geom_point(position = pd, size = 2, shape = 21, fill = "white") +
+  facet_wrap(.~Region) + 
+  labs(title = "A. Total Production", 
+       subtitle = "1991 - 2017", 
+       y = "log(Total Honey Production)",
+       x = "Year") +
+  theme(legend.position = "none")
+
+neonicyear <- ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() + 
+  facet_wrap(.~ Region) + labs(title = "B. Neonic Production",
+                               subtitle = "1991 - 2017",
+                               y = "Total Neonic Production",
+                               x = "Year")
+
+ggarrange(yearplot, neonicyear, ncol = 2)
+```
+
+```{r}
+honey <- read_csv("./Honey_v03.csv")
+
+costdata <- select(honey, year, Region, prodvalue)
+costdata$prodvalue <- log(costdata$prodvalue)
+costSE <- summarySE(costdata, measurevar = "prodvalue", groupvars = c("Region", "year"))
+pd <- position_dodge(0.1)
+
+ggplot(costSE, aes(x = year, y = prodvalue, color = "red", group = 1)) + 
+    geom_errorbar(aes(ymin = costSE$prodvalue - ci, ymax = costSE$prodvalue + ci), 
+                  width=.1, position = pd, alpha = 0.4) +
+    geom_line(position = pd) +
+    geom_point(position = pd, size = 2, shape = 21, fill = "white") +
+  facet_wrap(.~Region) + 
+  labs(title = "Production Value", subtitle = "1991 - 2017", y = "Production Value",
+       x = "Year") +
+  theme(legend.position = "none")
+```
+
+```{r}
+ggplot(honey, aes(x = log(numcol), y = yieldpercol)) + geom_point() + 
+  facet_grid(.~ Region) + geom_smooth(method = lm)
+```
+
+```{r}
+byneonic <- select(honey, totalprod, 12:16, Region); byneonic
+byneonic <- na.omit(byneonic)
+byneonicA <- gather(byneonic, "Type", "Amount", 2:6)
+byneonicB <- byneonicA %>%
+  mutate(logtotalprod = log(totalprod), logamount = log(Amount))
+byneonicB
+
+ggplot(byneonicB, aes(x = logamount, y = logtotalprod, color = Type)) + 
+  geom_point() + facet_grid(.~ Region) + 
+  geom_smooth(method = lm, se = FALSE)
+```
+
+```{r}
+ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() + facet_grid(.~ Region)
+```
+
 
  
 * outcome and predictor variables we use to answer the question
