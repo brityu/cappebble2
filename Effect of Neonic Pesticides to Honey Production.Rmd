@@ -21,6 +21,10 @@ The dataset was accessed online from URL: https://www.kaggle.com/kevinzmith/hone
 
 
 ```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+
 honey.csv <- read.csv("Honey_v03.csv")
 glimpse(honey.csv)
 ```
@@ -33,6 +37,9 @@ production takes into account the number of colonies and the honey yield per
 colony in pounds (lb). We first analyzed the relationship of the total production
 with the total Neonic ("nAllneonic") pesticides (in kg) per Region through a
 scatterplot using the GGplot2 package.
+
+
+
 
 ```{r}
 honey.csv <- read.csv("Honey_v03.csv")
@@ -48,6 +55,51 @@ ggplot(data = neonicvtotalprod, mapping = aes(x = nAllNeonic, y = log(totalprod)
   geom_smooth(method = "lm", se = FALSE) +
   labs (x = "Total Neonic (kg)", y = "Total Production (lb)", title = " Bee Honey Production under Neonic Pesticide by Region")
 ```
+The relationship of the total production and total neonic is positive for all
+regions except Midwest, as shown in the figure. To identify the strength and
+direction of the relationship between the two variables in different regions, 
+we used the Spearman method of correlation test. Indeed, out of the four regions,
+the correlation of total honey production and neonic pesticides are weakly
+correlated towards negative direction and is not statistically significant (rho:
+-0.103). South, west, and northeast regions have a weak positive correlation with
+correlation coefficient of 0.403, 0.355, and 0.351, respectively. The weak
+linear relationship trend in all regions, therefore, indicate that honey
+production and use of neonic pesticides do not have a statistically significant
+relationship.
+```{r}
+#Statistical test: correlation per region
+neonicstatmw <- honey.csv %>%
+  filter(Region == "Midwest")
+cortest.mw <- cor.test(neonicstatmw$totalprod, neonicstatmw$nAllNeonic, method = "spearman", exact = FALSE)
+cortest.mw
+
+
+neonicstatwest <- honey.csv %>%
+  filter(Region == "West")
+cortest.w <- cor.test(neonicstatwest$totalprod, neonicstatwest$nAllNeonic, method = "spearman", exact = FALSE)
+cortest.w
+
+neonicstatne <- honey.csv %>%
+  filter(Region == "Northeast")
+cortest.ne <- cor.test(neonicstatne$totalprod, neonicstatne$nAllNeonic, method = "spearman", exact = FALSE)
+cortest.ne
+
+neonicstatsouth <- honey.csv %>%
+  filter(Region == "South")
+cortest.s <- cor.test(neonicstatsouth$totalprod, neonicstatsouth$nAllNeonic, method = "spearman", exact = FALSE)
+cortest.s
+
+
+#Making a data frame of statistical results
+Region <- c("Midwest", "West", "Northeast", "South")
+p.value <- c(cortest.mw$p.value, cortest.w$p.value, cortest.mw$p.value, cortest.s$p.value)
+rho <- c(-0.1027632, 0.3549792, 0.3510381, 0.4034019)
+significance <- c("ns", "*", "*", "*")
+
+allneonic <- cbind(Region, p.value, rho, significance)
+allneonic <- data.frame(allneonic); allneonic
+```
+
 
  
 * outcome and predictor variables we use to answer the question
