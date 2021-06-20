@@ -244,3 +244,10 @@ Figure3 <- ggarrange(yearplot, neonicyear, ncol = 2); Figure3
 
 ## 4. SUMMARY
 
+## REFERENCES
+
+Muth, F. and Leonard, A. S. (2019) ‘A neonicotinoid pesticide impairs foraging, but not learning, in free-flying bumblebees’, Scientific Reports, 9(1), p. 4764. doi: 10.1038/s41598-019-39701-5.
+
+Jeschke, P. and Nauen, R. (2008) ‘Neonicotinoids—from zero to hero in insecticide chemistry’, Pest Management Science, 64(11), pp. 1084–1098. doi: 10.1002/ps.1631.
+
+Biesmeijer, J. C. et al. (2006) ‘Parallel Declines in Pollinators and Insect-Pollinated Plants in Britain and the Netherlands’, Science, 313(5785), pp. 351–354. doi: 10.1126/science.1127863.
