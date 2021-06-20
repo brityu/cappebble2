@@ -56,7 +56,7 @@ Figure1 <- ggplot(data = byproduction, mapping = aes(x = log(nAllNeonic),
   geom_smooth(method = "lm", se = FALSE) +
   labs (x = "log of Total Neonic (kg)", 
         y = "log of Total Production (lb)", 
-        title = " Bee Honey Production under Neonic Pesticide by Region"); fig1
+        title = " Bee Honey Production under Neonic Pesticide by Region"); Figure1
 ```
 
   The relationship of the total production and total neonic is positive for all regions except in the midwest (Figure1). To identify the strength and direction of the relationship between the two variables in different regions, we used the Spearman correlation test. Indeed, out of the four regions, the correlation of total honey production and neonic pesticides in the midwest is weak, negative, and not statistically significant (p > 0.05, rho= -0.103). On the other hand, total honey production and total neonic in the south, west, and northeast regions show weak, positive, and statistically significant correlations (Table1). While the linear relationships may be weak, there is statistical evidence to prove that total production of honey is positively correlated with total neonic in all regions except the midwest. Why this relationship exists cannot be explained by data present in the dataset. Other factors such as geographic attributes including population and local consumption of neonics should be taken into account in future studies.
@@ -135,7 +135,7 @@ acemid.cor <- cor.test(midwest$totalprod, midwest$Acetamiprid,
                        method = "spearman", exact = FALSE)
 clomid.cor <- cor.test(midwest$totalprod, midwest$Clothianidin, 
                        method = "spearman", exact = FALSE)
-midmid.cor <- cor.test(midwest$totalprod, midwest$Midacloprid, 
+midmid.cor <- cor.test(midwest$totalprod, midwest$Imidacloprid, 
                        method = "spearman", exact = FALSE)
 thiamethid.cor <- cor.test(midwest$totalprod, midwest$Thiamethoxam, 
                            method = "spearman", exact = FALSE)
@@ -147,7 +147,7 @@ acene.cor <- cor.test(northeast$totalprod, northeast$Acetamiprid,
                       method = "spearman", exact = FALSE)
 clone.cor <- cor.test(northeast$totalprod, northeast$Clothianidin, 
                       method = "spearman", exact = FALSE)
-midne.cor <- cor.test(northeast$totalprod, northeast$Midacloprid, 
+midne.cor <- cor.test(northeast$totalprod, northeast$Imidacloprid, 
                       method = "spearman", exact = FALSE)
 thiamethne.cor <- cor.test(northeast$totalprod, northeast$Thiamethoxam, 
                            method = "spearman", exact = FALSE)
@@ -159,7 +159,7 @@ acesouth.cor <- cor.test(south$totalprod, south$Acetamiprid,
                          method = "spearman", exact = FALSE)
 closouth.cor <- cor.test(south$totalprod, south$Clothianidin, 
                          method = "spearman", exact = FALSE)
-midsouth.cor <- cor.test(south$totalprod, south$Midacloprid, 
+midsouth.cor <- cor.test(south$totalprod, south$Imidacloprid, 
                          method = "spearman", exact = FALSE)
 thiamethsouth.cor <- cor.test(south$totalprod, south$Thiamethoxam, 
                               method = "spearman", exact = FALSE)
@@ -171,7 +171,7 @@ acewest.cor <- cor.test(west$totalprod, west$Acetamiprid,
                         method = "spearman", exact = FALSE)
 clowest.cor <- cor.test(west$totalprod, west$Clothianidin, 
                         method = "spearman", exact = FALSE)
-midwest.cor <- cor.test(west$totalprod, west$Midacloprid, 
+midwest.cor <- cor.test(west$totalprod, west$Imidacloprid, 
                         method = "spearman", exact = FALSE)
 thiamethwest.cor <- cor.test(west$totalprod, west$Thiamethoxam, 
                              method = "spearman", exact = FALSE)
@@ -183,11 +183,11 @@ Region. <- c("Midwest", "Midwest", "Midwest", "Midwest", "Midwest",
              "Northeast", "Northeast", "Northeast", "Northeast","Northeast",
              "South", "South", "South", "South", "South", "West", "West", 
              "West", "West","West")
-NeonicType <- c("Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", 
-                "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", 
+NeonicType <- c("Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", 
+                "Thiacloprid", "Acetamiprid", "Clothianidin", "Imidacloprid", 
                 "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", 
-                "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", 
-                "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid")
+                "Imidacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", 
+                "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid")
 p.value. <- c(acemid.cor$p.value, clomid.cor$p.value, midmid.cor$p.value, 
               thiamethid.cor$p.value, thiaclomid.cor$p.value, acene.cor$p.value, 
               clone.cor$p.value, midne.cor$p.value, thiamethne.cor$p.value, 

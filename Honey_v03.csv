@@ -1,4 +1,4 @@
-state,numcol,yieldpercol,totalprod,stocks,priceperlb,prodvalue,year,StateName,Region,FIPS,Clothianidin,Midacloprid,Thiamethoxam,Acetamiprid,Thiacloprid,nAllNeonic
+state,numcol,yieldpercol,totalprod,stocks,priceperlb,prodvalue,year,StateName,Region,FIPS,Clothianidin,Imidacloprid,Thiamethoxam,Acetamiprid,Thiacloprid,nAllNeonic
 AL,14000,66,924000,92000,0.81,748000,1997,Alabama,South,1,0,6704.8,0,0,0,6704.8
 AL,15000,64,960000,96000,0.87,835000,1996,Alabama,South,1,0,371.6,0,0,0,371.6
 AL,16000,58,928000,28000,0.69,640000,1995,Alabama,South,1,0,716.5,0,0,0,716.5
