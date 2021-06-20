@@ -54,7 +54,9 @@ Figure1 <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nAllNeonic),
   geom_smooth(method = "lm", se = FALSE) +
   labs (x = "log of Total Neonic (kg)", 
         y = "log of Total Production (lb)", 
-        title = " Bee Honey Production under Neonic Pesticide by Region"); fig1
+        title = " Bee Honey Production under Neonic Pesticide by Region")
+
+Figure1
 ```
 
   The relationship of the total production and total neonic is positive for all regions except in the midwest (Figure1). To identify the strength and direction of the relationship between the two variables in different regions, we used the Spearman correlation test. Indeed, out of the four regions, the correlation of total honey production and neonic pesticides in the midwest is weak, negative, and not statistically significant (p > 0.05, rho= -0.103). On the other hand, total honey production and total neonic in the south, west, and northeast regions show weak, positive, and statistically significant correlations (Table1). The weak linear trends in all regions, therefore, indicate that honey production and use of neonic pesticides do not have a statistically significant relationship.
@@ -109,7 +111,7 @@ high levels, while some are not.
 
 
 ```{r}
-byneonic <- select(honey.csv, totalprod, 12:16, Region)
+byneonic <- select(honey, totalprod, 12:16, Region)
 byneonic <- na.omit(byneonic)
 byneonicA <- gather(byneonic, "Type", "Amount", 2:6)
 byneonicB <- byneonicA %>%
