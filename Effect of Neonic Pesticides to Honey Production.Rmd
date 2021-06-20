@@ -40,15 +40,17 @@ glimpse(honey)
 
 ## 3. DATA ANALYSIS
 
+  In the following data analysis, changes in total production are evaluated by region. This analysis focuses on factors that affect honey production as an indication of the bee population. Interactions between regions are beyond the limits of this study, since we treated regions independently. Lastly, since the USDA and USGS data are obtained separately, some missing values limited the analysis to visual graphs instead of statistical tests (see 3.3). Furthermore, due to the diversity of factors not taken into account and included in the dataset, further investigation must be performed to understand substantially how the use of neonics contribute to the decline in the bee population.
+
 # 3.1. Total Neonic Production
 
   We first evaluated the effect of neonic pesticides on total honey production. The total honey production takes into account the number of colonies and the honey yield per colony (lb). Here, we analyzed the correlation of total honey production as a function of total neonic pesticides (kg) per region.
 
 ```{r}
-neonicvtotalprod <- honey %>%
+byproduction <- honey %>%
   group_by(Region) 
 
-Figure1 <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nAllNeonic), 
+Figure1 <- ggplot(data = byproduction, mapping = aes(x = log(nAllNeonic), 
   y = log(totalprod), group = Region)) +
   facet_grid(.~ Region) + geom_point() + 
   geom_smooth(method = "lm", se = FALSE) +
@@ -57,7 +59,7 @@ Figure1 <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nAllNeonic),
         title = " Bee Honey Production under Neonic Pesticide by Region"); fig1
 ```
 
-  The relationship of the total production and total neonic is positive for all regions except in the midwest (Figure1). To identify the strength and direction of the relationship between the two variables in different regions, we used the Spearman correlation test. Indeed, out of the four regions, the correlation of total honey production and neonic pesticides in the midwest is weak, negative, and not statistically significant (p > 0.05, rho= -0.103). On the other hand, total honey production and total neonic in the south, west, and northeast regions show weak, positive, and statistically significant correlations (Table1). The weak linear trends in all regions, therefore, indicate that honey production and use of neonic pesticides do not have a statistically significant relationship.
+  The relationship of the total production and total neonic is positive for all regions except in the midwest (Figure1). To identify the strength and direction of the relationship between the two variables in different regions, we used the Spearman correlation test. Indeed, out of the four regions, the correlation of total honey production and neonic pesticides in the midwest is weak, negative, and not statistically significant (p > 0.05, rho= -0.103). On the other hand, total honey production and total neonic in the south, west, and northeast regions show weak, positive, and statistically significant correlations (Table1). While the linear relationships may be weak, there is statistical evidence to prove that total production of honey is positively correlated with total neonic in all regions except the midwest. Why this relationship exists cannot be explained by data present in the dataset. Other factors such as geographic attributes including population and local consumption of neonics should be taken into account in future studies.
 
 
 ```{r}
@@ -90,165 +92,137 @@ Table1 <- data.frame(allneonic); Table1
 ```
 
 # 3.2 Type of Neonic
-According to the USGS data, there are fives types of neonics used in the US
-States, namely, clothianidin, imidacloprid, thiamethoxam, acetamiprid,
-thaicloprid. To know what neonic type significantly contributes to the changes
-in the total honey production, we visualized and analyzed their relationship
-using the same procedure we used for the first analysis. We cannot test for
-significant relationship between regions because what takes place in one region
-is independent to the other.
 
-The amount of thiamethoxam neonic pesticide is statistically significant to the
-total honey production in all four regions, out of all the other neonics. We 
-cannot be certain to the possible reason for the variation, but there are
-two possible hypotheses for testing. The first hypothesis involves testing
-for the lethality of all neonics. Second, we can test for different percentage
-of neonic types to the total neonic levels. The significance levels may have been
-affected by the non-uniformity of the data; some neonic types were present at 
-high levels, while some are not.
-
+  According to the USGS data, there are fives types of neonics used in the US States, namely, clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid. The relationships of total honey production and the amount of neonic by type are shown below (Figure2).
 
 ```{r}
-byneonic <- select(honey.csv, totalprod, 12:16, Region)
+byneonic <- select(honey, totalprod, 12:16, Region)
 byneonic <- na.omit(byneonic)
 byneonicA <- gather(byneonic, "Type", "Amount", 2:6)
 byneonicB <- byneonicA %>%
   mutate(logtotalprod = log(totalprod), logamount = log(Amount))
 
 
-ggplot(byneonicB, aes(x = logamount, y = logtotalprod, color = Type)) + 
+Figure2 <- ggplot(byneonicB, aes(x = logamount, y = logtotalprod, color = Type)) + 
   geom_point() + facet_grid(.~ Region) + 
-   labs(Title = "Effects of different Neonic types to honey production by Region", x = "Amount of Neonic (kg)", y = "Total Honey Production (lb)") +
-   scale_fill_discrete(name = "Type", labels = c("Acetamiprid", "Clothianidin", "Imidacloprid", "Thiacloprid", "Thiamethoxam"))  +
-  geom_smooth(method = lm, se = FALSE)
+   labs(title = "Effects of Different Neonic Types to Honey Production by Region", 
+        x = "log of Amount of Neonic (kg)", 
+        y = "log of Total Honey Production (lb)") +
+   scale_fill_discrete(name = "Type", labels = c("Acetamiprid", "Clothianidin", 
+                                                 "Imidacloprid", "Thiacloprid", 
+                                                 "Thiamethoxam"))  +
+  geom_smooth(method = lm, se = FALSE); Figure2
+```
 
-#filter dataset by region
+  All neonic types show a weak correlation with total honey production. Of all, only thiamethoxam and clothianidin show significant correlation across all regions, although some are positive while others are negative. We cannot be certain of the possible reasons for these variations, but we propose two hypotheses for further testing. 
+  The first hypothesis involves testing for the lethality of all neonics. Neonics were significantly found to have dose-dependent detrimental effects on foraging performance of bees (Muth and Leonard, 2019). Data on mortality rate due to acute exposure of bees to neonics should be investigated.
+  Second, we can test for the total contribution of each neonic type to the total neonic recorded in 3.1. The significance levels may have been affected by the non-uniformity of the data; some neonic types were present at high levels, while some are not. Furthermore, the USDS dataset have several missing data, for which our analysis cannot fully compensate.
+
+```{r}
+#FILTER DATASET BY REGION
 midwest <- byneonic %>%
   filter(Region == "Midwest")
-
 northeast <- byneonic %>%
   filter(Region == "Northeast")
-
 south <- byneonic %>%
   filter(Region == "South")
-
 west <- byneonic %>%
   filter(Region == "West")
 
-#Correlation test per neonic type per region
+#SPEARMAN CORRELATION OF NEONIC TYPE AND TOTALPROD BY REGION
+#Midwest
+acemid.cor <- cor.test(midwest$totalprod, midwest$Acetamiprid, 
+                       method = "spearman", exact = FALSE)
+clomid.cor <- cor.test(midwest$totalprod, midwest$Clothianidin, 
+                       method = "spearman", exact = FALSE)
+midmid.cor <- cor.test(midwest$totalprod, midwest$Midacloprid, 
+                       method = "spearman", exact = FALSE)
+thiamethid.cor <- cor.test(midwest$totalprod, midwest$Thiamethoxam, 
+                           method = "spearman", exact = FALSE)
+thiaclomid.cor <- cor.test(midwest$totalprod, midwest$Thiacloprid, 
+                           method = "spearman", exact = FALSE)
 
-acemid.cor <- cor.test(midwest$totalprod, midwest$Acetamiprid, method = "spearman", exact = FALSE)
-acemid.cor
+#Northeast
+acene.cor <- cor.test(northeast$totalprod, northeast$Acetamiprid, 
+                      method = "spearman", exact = FALSE)
+clone.cor <- cor.test(northeast$totalprod, northeast$Clothianidin, 
+                      method = "spearman", exact = FALSE)
+midne.cor <- cor.test(northeast$totalprod, northeast$Midacloprid, 
+                      method = "spearman", exact = FALSE)
+thiamethne.cor <- cor.test(northeast$totalprod, northeast$Thiamethoxam, 
+                           method = "spearman", exact = FALSE)
+thiaclone.cor <- cor.test(northeast$totalprod, northeast$Thiacloprid, 
+                          method = "spearman", exact = FALSE)
 
-clomid.cor <- cor.test(midwest$totalprod, midwest$Clothianidin, method = "spearman", exact = FALSE)
-clomid.cor
+#South
+acesouth.cor <- cor.test(south$totalprod, south$Acetamiprid, 
+                         method = "spearman", exact = FALSE)
+closouth.cor <- cor.test(south$totalprod, south$Clothianidin, 
+                         method = "spearman", exact = FALSE)
+midsouth.cor <- cor.test(south$totalprod, south$Midacloprid, 
+                         method = "spearman", exact = FALSE)
+thiamethsouth.cor <- cor.test(south$totalprod, south$Thiamethoxam, 
+                              method = "spearman", exact = FALSE)
+thiaclosouth.cor <- cor.test(south$totalprod, south$Thiacloprid,
+                             method = "spearman", exact = FALSE)
 
+#West
+acewest.cor <- cor.test(west$totalprod, west$Acetamiprid, 
+                        method = "spearman", exact = FALSE)
+clowest.cor <- cor.test(west$totalprod, west$Clothianidin, 
+                        method = "spearman", exact = FALSE)
+midwest.cor <- cor.test(west$totalprod, west$Midacloprid, 
+                        method = "spearman", exact = FALSE)
+thiamethwest.cor <- cor.test(west$totalprod, west$Thiamethoxam, 
+                             method = "spearman", exact = FALSE)
+thiaclowest.cor <- cor.test(west$totalprod, west$Thiacloprid, 
+                            method = "spearman", exact = FALSE)
 
-midmid.cor <- cor.test(midwest$totalprod, midwest$Midacloprid, method = "spearman", exact = FALSE)
-midmid.cor
-
-
-thiamethid.cor <- cor.test(midwest$totalprod, midwest$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethid.cor
-
-thiaclomid.cor <- cor.test(midwest$totalprod, midwest$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclomid.cor
-
-
-#northeast
-
-acene.cor <- cor.test(northeast$totalprod, northeast$Acetamiprid, method = "spearman", exact = FALSE)
-acene.cor
-
-clone.cor <- cor.test(northeast$totalprod, northeast$Clothianidin, method = "spearman", exact = FALSE)
-clone.cor
-
-
-midne.cor <- cor.test(northeast$totalprod, northeast$Midacloprid, method = "spearman", exact = FALSE)
-midne.cor
-
-
-thiamethne.cor <- cor.test(northeast$totalprod, northeast$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethne.cor
-
-
-thiaclone.cor <- cor.test(northeast$totalprod, northeast$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclone.cor
-
-#south
-
-acesouth.cor <- cor.test(south$totalprod, south$Acetamiprid, method = "spearman", exact = FALSE)
-acesouth.cor
-
-closouth.cor <- cor.test(south$totalprod, south$Clothianidin, method = "spearman", exact = FALSE)
-closouth.cor
-
-
-midsouth.cor <- cor.test(south$totalprod, south$Midacloprid, method = "spearman", exact = FALSE)
-midsouth.cor
-
-
-thiamethsouth.cor <- cor.test(south$totalprod, south$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethsouth.cor
-
-
-thiaclosouth.cor <- cor.test(south$totalprod, south$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclosouth.cor
-
-#west
-
-acewest.cor <- cor.test(west$totalprod, west$Acetamiprid, method = "spearman", exact = FALSE)
-acewest.cor
-
-clowest.cor <- cor.test(west$totalprod, west$Clothianidin, method = "spearman", exact = FALSE)
-clowest.cor
-
-
-midwest.cor <- cor.test(west$totalprod, west$Midacloprid, method = "spearman", exact = FALSE)
-midwest.cor
-
-
-thiamethwest.cor <- cor.test(west$totalprod, west$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethwest.cor
-
-
-thiaclowest.cor <- cor.test(west$totalprod, west$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclowest.cor
-
-#making dataframe of the significance of statistical results
-Region <- c("Midwest", "Midwest", "Midwest", "Midwest", "Midwest", "Northeast", "Northeast", "Northeast", "Northeast","Northeast","South", "South", "South", "South", "South", "West", "West", "West", "West","West")
-NeonicType <- c("Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid")
-p.value <- c(acemid.cor$p.value, clomid.cor$p.value, midmid.cor$p.value, thiamethid.cor$p.value, thiaclomid.cor$p.value, acene.cor$p.value, clone.cor$p.value, midne.cor$p.value, thiamethne.cor$p.value, thiaclone.cor$p.value, acesouth.cor$p.value, closouth.cor$p.value, midsouth.cor$p.value, thiamethsouth.cor$p.value, thiaclosouth.cor$p.value, acewest.cor$p.value, clowest.cor$p.value, midwest.cor$p.value, thiamethsouth.cor$p.value, thiaclowest.cor$p.value)
-
-rho <- c(-0.3406599, -0.178460 ,-0.04370683 ,-0.1223294 ,-0.2207321  ,0.178998
+#FRAMING THE STATISTICAL RESULTS
+Region. <- c("Midwest", "Midwest", "Midwest", "Midwest", "Midwest", 
+             "Northeast", "Northeast", "Northeast", "Northeast","Northeast",
+             "South", "South", "South", "South", "South", "West", "West", 
+             "West", "West","West")
+NeonicType <- c("Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", 
+                "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", 
+                "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", 
+                "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", 
+                "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid")
+p.value. <- c(acemid.cor$p.value, clomid.cor$p.value, midmid.cor$p.value, 
+              thiamethid.cor$p.value, thiaclomid.cor$p.value, acene.cor$p.value, 
+              clone.cor$p.value, midne.cor$p.value, thiamethne.cor$p.value, 
+              thiaclone.cor$p.value, acesouth.cor$p.value, closouth.cor$p.value, 
+              midsouth.cor$p.value, thiamethsouth.cor$p.value, 
+              thiaclosouth.cor$p.value, acewest.cor$p.value, 
+              clowest.cor$p.value, midwest.cor$p.value, 
+              thiamethsouth.cor$p.value, thiaclowest.cor$p.value)
+rho. <- c(-0.3406599, -0.178460 ,-0.04370683 ,-0.1223294 ,-0.2207321  ,0.178998
          ,0.1504854 ,0.2958545 ,0.178656 ,0.2972762, 0.06931884, -0.03242255,
          0.5089368, 0.1946103, -0.2852726, 0.06372726, -0.07198862 , 0.3833301,
          0.1946103, 0.1439576)
-
-1.533013e-08 < 0.05
-
-significance <- c("*", "*", "ns", "*", "*", "ns", "*", "ns", "*", "ns","ns", "*", "*", "*", "ns", "ns", "*", "*", "*")
+significance. <- c("*", "*", "ns", "*", "*", "ns", "*", "ns", "*", "ns","ns", 
+                   "*", "*", "*", "ns", "ns", "*", "*", "*")
   
-neonic.type.df <- cbind(Region, NeonicType, p.value, rho, significance)
-neonic.type.df <- as.data.frame(neonic.type.df)
+neonic.type.df <- cbind(Region., NeonicType, p.value., rho., significance.)
+Table2 <- as.data.frame(neonic.type.df); Table2
 ```
+
 
 # 3.3. Year
 
-Total production of honey throughout 1991 to 2017 is visualized for four regions. Midwest shows the highest production throughout the years, while Northeast shows the lowest. Statistical analysis for any significant difference between years was impossible due to the absence of data from select states in each region which prevents pairwise comparison of repeated measures. However, the graph shows that despite the growing industry of Neonic production since 2003, total production of honey from bee colonies have been fluctuating in the Midwest and the West even before. Furthermore, Northeastern and Southern total production have been relatively steady for years. This could suggest that Neonic production does not necessarily induce an effect on total production of honey as a measure of the bee population. Other factors must be at play that maintains the production in the Northeast and the South, while there is unsteady decline in the Midwest and the West.
-Interestingly, the Midwest remains the highest producer of Neonics followed by the south. Why the midwest still remains the highest producer of honey despite the high production of Neonics could perhaps be explained by biological and geographical factors which are beyond the scope of the study.
-Without the use of statistical tests to point out the significance of differences in total production of honey throughout the years, we cannot conclude for sure whether the use of Neonics have a relationship with total production from 1991 to 2017.
+  Total production of honey throughout 1991 to 2017 is visualized for four regions (Figure 3). The midwest shows the highest production throughout the years, while Northeast shows the lowest. Statistical analysis for any significant difference between years was impossible due to the absence of data from select states in each region which prevents pairwise comparison of repeated measures. However, despite the growing industry of neonic production starting in 2003, total production of honey from bee colonies have been fluctuating in the midwest and the west even before. Furthermore, northeastern and southern total production have been relatively steady for years. 
+  This could suggest that neonic production does not necessarily induce an effect on total production of honey throughout the years. Other factors must be considered why production in the northeast and the south are maintained, while there is unsteady decline in the midwest and the west.
+  Interestingly, the midwest remains the highest producer of neonics followed by the south. Why the midwest still remains the highest producer of honey despite the high production of neonics could perhaps be explained by biological and geographical factors which are beyond the scope of the study.
+  Without the use of statistical tests to point out the significance of differences in total production of honey throughout the years, we cannot conclude definitely whether the use of neonics has a relationship with total production from 1991 to 2017, although graphic analysis proves it unlikely.
 
 ```{r}
-honey <- read_csv("Honey_v03.csv")
-
-yeardata <- select(honey, year, Region, totalprod)
-yeardata$totalprod <- log(yeardata$totalprod)
-yearSE <- summarySE(yeardata, measurevar = "totalprod", groupvars = c("Region", "year"))
+byyear <- select(honey, year, Region, totalprod)
+byyear$totalprod <- log(byyear$totalprod)
+byyearSE <- summarySE(byyear, measurevar = "totalprod", groupvars = c("Region", "year"))
 pd <- position_dodge(0.1)
 
-yearplot <- ggplot(yearSE, aes(x = year, y = totalprod, color = "red", group = 1)) + 
-    geom_errorbar(aes(ymin = yearSE$totalprod - ci, ymax = yearSE$totalprod + ci), 
+yearplot <- ggplot(byyearSE, aes(x = year, y = totalprod, color = "red", group = 1)) + 
+    geom_errorbar(aes(ymin = byyearSE$totalprod - ci, ymax = byyearSE$totalprod + ci), 
                   width=.1, position = pd, alpha = 0.4) +
     geom_line(position = pd) +
     geom_point(position = pd, size = 2, shape = 21, fill = "white") +
@@ -265,49 +239,8 @@ neonicyear <- ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() +
                                y = "Total Neonic Production",
                                x = "Year")
 
-ggarrange(yearplot, neonicyear, ncol = 2)
+Figure3 <- ggarrange(yearplot, neonicyear, ncol = 2); Figure3
 ```
 
-```{r}
-honey <- read_csv("./Honey_v03.csv")
+## 4. SUMMARY
 
-costdata <- select(honey, year, Region, prodvalue)
-costdata$prodvalue <- log(costdata$prodvalue)
-costSE <- summarySE(costdata, measurevar = "prodvalue", groupvars = c("Region", "year"))
-pd <- position_dodge(0.1)
-
-ggplot(costSE, aes(x = year, y = prodvalue, color = "red", group = 1)) + 
-    geom_errorbar(aes(ymin = costSE$prodvalue - ci, ymax = costSE$prodvalue + ci), 
-                  width=.1, position = pd, alpha = 0.4) +
-    geom_line(position = pd) +
-    geom_point(position = pd, size = 2, shape = 21, fill = "white") +
-  facet_wrap(.~Region) + 
-  labs(title = "Production Value", subtitle = "1991 - 2017", y = "Production Value",
-       x = "Year") +
-  theme(legend.position = "none")
-```
-
-```{r}
-ggplot(honey, aes(x = log(numcol), y = yieldpercol)) + geom_point() + 
-  facet_grid(.~ Region) + geom_smooth(method = lm)
-```
-
-
-```{r}
-ggplot(honey, aes(x = year, y = nAllNeonic)) + geom_col() + facet_grid(.~ Region)
-```
-
-
- 
-* outcome and predictor variables we use to answer the question
-* comparison groups that we use (if applicable)
-* very preliminary exploratory data analysis
---> summary statistics
---> visualizations
---> + explanation on how they help you learn more about your data
-
-* the methods that you believe will be useful in answering your question(s)
-
-* What results from these specific statistical methods are needed to support your hypothesized answer?
-
-* Each section should be no more than 1 page (excluding figures). You can check  a print preview to confirm length
