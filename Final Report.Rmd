@@ -347,10 +347,11 @@ increase of honey production.
 
 It should be noted that the dataset is a combination of separate datasets, one
 from USDS and the other from USDA. We are not certain if they involved evaluating
-the same set of bee colonies. Hence, we recommend the assessment of use of neonic
-pesticides and honey production to be performed by a single group to ensure
-interaction between the variables. 
-
+the same set of bee colonies. Hence, we recommend the future researchers to 
+assess the use of neonic pesticides and honey production in the same location
+to ensure higher chances of interaction between the variables. We also suggest
+taking note of other biological and geological events that can possibly affect
+the decline in bee honey production.
 
 ## REFERENCES
 
