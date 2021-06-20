@@ -146,7 +146,7 @@ clomid.cor <- cor.test(midwest$totalprod, midwest$Clothianidin, method = "spearm
 clomid.cor
 
 
-midmid.cor <- cor.test(midwest$totalprod, midwest$Midacloprid, method = "spearman", exact = FALSE)
+midmid.cor <- cor.test(midwest$totalprod, midwest$Imidacloprid, method = "spearman", exact = FALSE)
 midmid.cor
 
 
@@ -166,7 +166,7 @@ clone.cor <- cor.test(northeast$totalprod, northeast$Clothianidin, method = "spe
 clone.cor
 
 
-midne.cor <- cor.test(northeast$totalprod, northeast$Midacloprid, method = "spearman", exact = FALSE)
+midne.cor <- cor.test(northeast$totalprod, northeast$Imidacloprid, method = "spearman", exact = FALSE)
 midne.cor
 
 
@@ -186,7 +186,7 @@ closouth.cor <- cor.test(south$totalprod, south$Clothianidin, method = "spearman
 closouth.cor
 
 
-midsouth.cor <- cor.test(south$totalprod, south$Midacloprid, method = "spearman", exact = FALSE)
+midsouth.cor <- cor.test(south$totalprod, south$Imidacloprid, method = "spearman", exact = FALSE)
 midsouth.cor
 
 
@@ -206,7 +206,7 @@ clowest.cor <- cor.test(west$totalprod, west$Clothianidin, method = "spearman", 
 clowest.cor
 
 
-midwest.cor <- cor.test(west$totalprod, west$Midacloprid, method = "spearman", exact = FALSE)
+midwest.cor <- cor.test(west$totalprod, west$Imidacloprid, method = "spearman", exact = FALSE)
 midwest.cor
 
 
@@ -219,7 +219,7 @@ thiaclowest.cor
 
 #making dataframe of the significance of statistical results
 Region <- c("Midwest", "Midwest", "Midwest", "Midwest", "Midwest", "Northeast", "Northeast", "Northeast", "Northeast","Northeast","South", "South", "South", "South", "South", "West", "West", "West", "West","West")
-NeonicType <- c("Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Midacloprid", "Thiamethoxam", "Thiacloprid")
+NeonicType <- c("Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid")
 p.value <- c(acemid.cor$p.value, clomid.cor$p.value, midmid.cor$p.value, thiamethid.cor$p.value, thiaclomid.cor$p.value, acene.cor$p.value, clone.cor$p.value, midne.cor$p.value, thiamethne.cor$p.value, thiaclone.cor$p.value, acesouth.cor$p.value, closouth.cor$p.value, midsouth.cor$p.value, thiamethsouth.cor$p.value, thiaclosouth.cor$p.value, acewest.cor$p.value, clowest.cor$p.value, midwest.cor$p.value, thiamethsouth.cor$p.value, thiaclowest.cor$p.value)
 
 rho <- c(-0.3406599, -0.178460 ,-0.04370683 ,-0.1223294 ,-0.2207321  ,0.178998
