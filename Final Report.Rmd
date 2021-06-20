@@ -95,7 +95,7 @@ Table1 <- data.frame(allneonic); Table1
 
 # 3.2 Type of Neonic
 
-  According to the USGS data, there are fives types of neonics used in the US States, namely, clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid. The relationships of total honey production and the amount of neonic by type are shown below (Figure2).
+  According to the USGS data, there are fives types of neonics used in the US States, namely, clothianidin, imidacloprid, thiamethoxam, acetamiprid, and thiacloprid. The relationships of total honey production and the amount of neonic by type are shown below (Figure2).
 
 ```{r}
 byneonic <- select(honey, totalprod, 12:16, Region)
