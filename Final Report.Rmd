@@ -200,94 +200,6 @@ p.value. <- c(acemid.cor$p.value, clomid.cor$p.value, midmid.cor$p.value,
               clowest.cor$p.value, midwest.cor$p.value, 
               thiamethsouth.cor$p.value, thiaclowest.cor$p.value)
 rho. <- c(-0.3406599, -0.178460 ,-0.04370683 ,-0.1223294 ,-0.2207321  ,0.178998
-=======
-#Correlation test per neonic type per region
-
-acemid.cor <- cor.test(midwest$totalprod, midwest$Acetamiprid, method = "spearman", exact = FALSE)
-acemid.cor
-
-clomid.cor <- cor.test(midwest$totalprod, midwest$Clothianidin, method = "spearman", exact = FALSE)
-clomid.cor
-
-
-midmid.cor <- cor.test(midwest$totalprod, midwest$Imidacloprid, method = "spearman", exact = FALSE)
-midmid.cor
-
-
-thiamethid.cor <- cor.test(midwest$totalprod, midwest$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethid.cor
-
-thiaclomid.cor <- cor.test(midwest$totalprod, midwest$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclomid.cor
-
-
-#northeast
-
-acene.cor <- cor.test(northeast$totalprod, northeast$Acetamiprid, method = "spearman", exact = FALSE)
-acene.cor
-
-clone.cor <- cor.test(northeast$totalprod, northeast$Clothianidin, method = "spearman", exact = FALSE)
-clone.cor
-
-
-midne.cor <- cor.test(northeast$totalprod, northeast$Imidacloprid, method = "spearman", exact = FALSE)
-midne.cor
-
-
-thiamethne.cor <- cor.test(northeast$totalprod, northeast$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethne.cor
-
-
-thiaclone.cor <- cor.test(northeast$totalprod, northeast$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclone.cor
-
-#south
-
-acesouth.cor <- cor.test(south$totalprod, south$Acetamiprid, method = "spearman", exact = FALSE)
-acesouth.cor
-
-closouth.cor <- cor.test(south$totalprod, south$Clothianidin, method = "spearman", exact = FALSE)
-closouth.cor
-
-
-midsouth.cor <- cor.test(south$totalprod, south$Imidacloprid, method = "spearman", exact = FALSE)
-midsouth.cor
-
-
-thiamethsouth.cor <- cor.test(south$totalprod, south$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethsouth.cor
-
-
-thiaclosouth.cor <- cor.test(south$totalprod, south$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclosouth.cor
-
-#west
-
-acewest.cor <- cor.test(west$totalprod, west$Acetamiprid, method = "spearman", exact = FALSE)
-acewest.cor
-
-clowest.cor <- cor.test(west$totalprod, west$Clothianidin, method = "spearman", exact = FALSE)
-clowest.cor
-
-
-midwest.cor <- cor.test(west$totalprod, west$Imidacloprid, method = "spearman", exact = FALSE)
-midwest.cor
-
-
-thiamethwest.cor <- cor.test(west$totalprod, west$Thiamethoxam, method = "spearman", exact = FALSE)
-thiamethwest.cor
-
-
-thiaclowest.cor <- cor.test(west$totalprod, west$Thiacloprid, method = "spearman", exact = FALSE)
-thiaclowest.cor
-
-#making dataframe of the significance of statistical results
-Region <- c("Midwest", "Midwest", "Midwest", "Midwest", "Midwest", "Northeast", "Northeast", "Northeast", "Northeast","Northeast","South", "South", "South", "South", "South", "West", "West", "West", "West","West")
-NeonicType <- c("Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid", "Acetamiprid", "Clothianidin", "Imidacloprid", "Thiamethoxam", "Thiacloprid")
-p.value <- c(acemid.cor$p.value, clomid.cor$p.value, midmid.cor$p.value, thiamethid.cor$p.value, thiaclomid.cor$p.value, acene.cor$p.value, clone.cor$p.value, midne.cor$p.value, thiamethne.cor$p.value, thiaclone.cor$p.value, acesouth.cor$p.value, closouth.cor$p.value, midsouth.cor$p.value, thiamethsouth.cor$p.value, thiaclosouth.cor$p.value, acewest.cor$p.value, clowest.cor$p.value, midwest.cor$p.value, thiamethsouth.cor$p.value, thiaclowest.cor$p.value)
-
-rho <- c(-0.3406599, -0.178460 ,-0.04370683 ,-0.1223294 ,-0.2207321  ,0.178998
->>>>>>> 2a3fad0b5cf978cde0008ab9fe462b6844638c1a
          ,0.1504854 ,0.2958545 ,0.178656 ,0.2972762, 0.06931884, -0.03242255,
          0.5089368, 0.1946103, -0.2852726, 0.06372726, -0.07198862 , 0.3833301,
          0.1946103, 0.1439576)
@@ -335,23 +247,9 @@ Figure3 <- ggarrange(yearplot, neonicyear, ncol = 2); Figure3
 
 ## 4. SUMMARY
 
-The relationship between the use of neonic pesticides in US agricultural lands
-and honey production of bees varies in different regions. Particularly, the
-correlation of the two variables are significant for all regions, except for
-the Midwest (p > 0.05, rho= -0.103). The total honey production were also
-analyzed in terms of each of the five neonic types. We found the presence
-of two neonics, thiamethoxam and clothianidin, to be statistically significant
-in all regions. The trend of honey production and use of neonics from 1991
-to 2017 reveal that neonic production do not necessarily affect the decline or
-increase of honey production.
+  The relationship between the use of neonic pesticides in US agricultural lands and honey production of bees varies in different regions. Particularly, the correlation of the two variables are significant for all regions, except for the Midwest (p > 0.05, rho= -0.103). The total honey production were also analyzed in terms of each of the five neonic types. We found the presence of two neonics, thiamethoxam and clothianidin, to be statistically significant in all regions. The trend of honey production and use of neonics from 1991 to 2017 reveal that neonic production did not necessarily affect the decline or increase of honey production.
 
-It should be noted that the dataset is a combination of separate datasets, one
-from USDS and the other from USDA. We are not certain if they involved evaluating
-the same set of bee colonies. Hence, we recommend the future researchers to 
-assess the use of neonic pesticides and honey production in the same location
-to ensure higher chances of interaction between the variables. We also suggest
-taking note of other biological and geological events that can possibly affect
-the decline in bee honey production.
+  It should be noted that the dataset is a combination of separate datasets, one from USDS and the other from USDA. We are not certain if they involved evaluating the same set of bee colonies. Hence, we recommend for future researchers to assess the use of neonic pesticides and honey production in the same location to ensure higher chances of interaction between the variables. We also suggest taking note of other biological and geological events that can possibly affect the decline in bee honey production.
 
 ## REFERENCES
 
