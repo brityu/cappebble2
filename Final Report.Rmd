@@ -335,6 +335,23 @@ Figure3 <- ggarrange(yearplot, neonicyear, ncol = 2); Figure3
 
 ## 4. SUMMARY
 
+The relationship between the use of neonic pesticides in US agricultural lands
+and honey production of bees varies in different regions. Particularly, the
+correlation of the two variables are significant for all regions, except for
+the Midwest (p > 0.05, rho= -0.103). The total honey production were also
+analyzed in terms of each of the five neonic types. We found the presence
+of two neonics, thiamethoxam and clothianidin, to be statistically significant
+in all regions. The trend of honey production and use of neonics from 1991
+to 2017 reveal that neonic production do not necessarily affect the decline or
+increase of honey production.
+
+It should be noted that the dataset is a combination of separate datasets, one
+from USDS and the other from USDA. We are not certain if they involved evaluating
+the same set of bee colonies. Hence, we recommend the assessment of use of neonic
+pesticides and honey production to be performed by a single group to ensure
+interaction between the variables. 
+
+
 ## REFERENCES
 
 Muth, F. and Leonard, A. S. (2019) ‘A neonicotinoid pesticide impairs foraging, but not learning, in free-flying bumblebees’, Scientific Reports, 9(1), p. 4764. doi: 10.1038/s41598-019-39701-5.
