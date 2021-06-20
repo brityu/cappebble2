@@ -3,108 +3,93 @@ title: "Effect of Neonic Pesticides to Honey Production"
 output: html_document
 ---
 
-INTRODUCTION
+## 1. INTRODUCTION
 
-In this report, we intend to investigate what factors affect total production of honey across four regions (Midwest, West, Northeast, and South) in the USA. Total production of honey is the average yield per colony multiplied by the number of colonies present in the region. We used the total production of honey as a measurement of bee population in the assumption that higher total honey production corresponds to higher bee population.
+  Neonicotinoids or neonics are a class of insecticides used in modern crop protection that specifically targets the nicotinic acetylcholine receptors of insects (Jeschke and Nauen, 2008). Neonics have been in the market since the 90s and remain to be the most widely-used pesticide in the USA and China (Muth and Leonard, 2019). While the selectivity of the product aims to improve crop health without causing adverse effects to non-target organisms such as humans, some inevitable consequences arise nevertheless.
+
+  Bees are especially important in ecology for pollination and floral diversity. The decline in bee population has been correlated with the decline in pollinator-reliant out-crossing plant species (Biesmeijer et al., 2006). This decline in bee population has been implicated in the use of neonics, although reports show that acute exposure to neonics only affects foraging performance and not the survival or mortality of bees (Muth and Leonard, 2019).
+  
+  In this report, we intend to investigate whether the use of neonics indeed affect the total production of honey in four regions of the US (midwest, west, northeast, and south) using the dataset "Honeybees and Neonic Pesticides" from the US Department of Agriculture (USDA) and the US Geological Survery (USGS). Total production, the product of average yield per colony and the number of colonies in the region, is used as an indirect measurement of bee population in the assumption that higher total honey production corresponds to higher bee population.
+  
+  At the end of this data analysis, we aim to analyze the relationship between the total production of honey with use of Neonic pesticides in four USA regions; compare the effect of different types of neonics, specifically clothianidin, imidacloprid, thiamethoxam, acetamiprid, and thaicloprid, on total honey production; and identify the trend, if any exists, in total honey production from 1991 to 2017.
 
 
-At the end of this data analysis, we aim to:
+## 2. DATA
 
-* analyze the relationship between the total production of honey with use of Neonic pesticides in four USA regions;
-
-* compare the effect of different types of neonics, specifically clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid, to total honey production; and 
-
-* identify the trend of total honey production from 1991 to 2017.
-
-DATA
-
-The dataset was accessed online from URL: https://www.kaggle.com/kevinzmith/honey-with-neonic-pesticide, entitled "Honeybees and Neonic Pesticides". Variables involving honey production is from the US Department of Agriculture (USDA), namely, number of honey-producing colonies, honey yield per colony, total production, stocks, price per lb, and production value. On the other hand, data concenrning use of neonic pesticides from all over US is from the United States Geological Survey (USGS); the variables include total and individual amounts of neonic types 
-(clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid). Neonic data is collected by country, state, region, and year. Kevin Zmith classified the state into four regions: South, West, Midwest, and Northeast using US Census.
-
+  The dataset was accessed online from URL: https://www.kaggle.com/kevinzmith/honey-with-neonic-pesticide, entitled "Honeybees and Neonic Pesticides". Variables involving honey production are from USDA, namely, number of honey-producing colonies, honey yield per colony, total production, stocks, price per lb, and production value. 
+  
+  On the other hand, data concerning use of neonic pesticides from all over US are from USGS; the variables include total and individual amounts of each neonic type (clothianidin, imidacloprid, thiamethoxam, acetamiprid, thaicloprid). Neonic data is collected by country, state, region, and year. Kevin Zmith classified the state into four regions: South, West, Midwest, and Northeast using US Census.
 
 ```{r}
+#LIBRARIES USED
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
 library(ggpubr)
 library(Rmisc)
 library(rstatix)
-
-
-honey.csv <- read.csv("Honey_v03.csv")
-glimpse(honey.csv)
+```
+  
+```{r}
+#HONEY AND NEONIC PESTICIDES DATA
+honey <- read.csv("./Honey_v03.csv")
+head(honey)
+glimpse(honey)
 ```
 
-DATA ANALYSIS:
 
-The outcome variables we used to evaluate the effect of Neonic pesticides to
-honey production is the total production (denoted as "totalprod"). The total
-production takes into account the number of colonies and the honey yield per
-colony in pounds (lb). We first analyzed the relationship of the total production
-with the total Neonic ("nAllneonic") pesticides (in kg) per Region through a
-scatterplot using the GGplot2 package.
+## 3. DATA ANALYSIS
 
-The relationship of the total production and total neonic is positive for all
-regions except Midwest, as shown in the figure. To identify the strength and
-direction of the relationship between the two variables in different regions, 
-we used the Spearman method of correlation test. Indeed, out of the four regions,
-the correlation of total honey production and neonic pesticides are weakly
-correlated towards negative direction and is not statistically significant (rho:
--0.103). South, west, and northeast regions have a weak positive correlation with
-correlation coefficient of 0.403, 0.355, and 0.351, respectively. The weak
-linear relationship trend in all regions, therefore, indicate that honey
-production and use of neonic pesticides do not have a statistically significant
-relationship.
+# 3.1. Total Neonic Production
+
+  We first evaluated the effect of neonic pesticides on total honey production. The total honey production takes into account the number of colonies and the honey yield per colony (lb). Here, we analyzed the correlation of total honey production as a function of total neonic pesticides (kg) per region.
 
 ```{r}
-honey.csv <- read.csv("Honey_v03.csv")
-
-
-neonicvtotalprod <- honey.csv %>%
+neonicvtotalprod <- honey %>%
   group_by(Region) 
 
-
-ggplot(data = neonicvtotalprod, mapping = aes(x = nAllNeonic, y = log(totalprod), group = Region)) +
-  facet_grid(.~ Region) +
-  geom_point() +
+Figure1 <- ggplot(data = neonicvtotalprod, mapping = aes(x = log(nAllNeonic), 
+  y = log(totalprod), group = Region)) +
+  facet_grid(.~ Region) + geom_point() + 
   geom_smooth(method = "lm", se = FALSE) +
-  labs (x = "Total Neonic (kg)", y = "Total Production (lb)", title = " Bee Honey Production under Neonic Pesticide by Region")
+  labs (x = "log of Total Neonic (kg)", 
+        y = "log of Total Production (lb)", 
+        title = " Bee Honey Production under Neonic Pesticide by Region"); fig1
 ```
 
+  The relationship of the total production and total neonic is positive for all regions except in the midwest (Figure1). To identify the strength and direction of the relationship between the two variables in different regions, we used the Spearman correlation test. Indeed, out of the four regions, the correlation of total honey production and neonic pesticides in the midwest is weak, negative, and not statistically significant (p > 0.05, rho= -0.103). On the other hand, total honey production and total neonic in the south, west, and northeast regions show weak, positive, and statistically significant correlations (Table1). The weak linear trends in all regions, therefore, indicate that honey production and use of neonic pesticides do not have a statistically significant relationship.
+
+
 ```{r}
-#Statistical test: correlation per region
-neonicstatmw <- honey.csv %>%
+#SPEARMAN CORRELATION BY REGION
+neonicstatmw <- honey %>%
   filter(Region == "Midwest")
 cortest.mw <- cor.test(neonicstatmw$totalprod, neonicstatmw$nAllNeonic, method = "spearman", exact = FALSE)
-cortest.mw
 
-
-neonicstatwest <- honey.csv %>%
+neonicstatwest <- honey %>%
   filter(Region == "West")
 cortest.w <- cor.test(neonicstatwest$totalprod, neonicstatwest$nAllNeonic, method = "spearman", exact = FALSE)
-cortest.w
 
-neonicstatne <- honey.csv %>%
+neonicstatne <- honey %>%
   filter(Region == "Northeast")
 cortest.ne <- cor.test(neonicstatne$totalprod, neonicstatne$nAllNeonic, method = "spearman", exact = FALSE)
-cortest.ne
 
-neonicstatsouth <- honey.csv %>%
+neonicstatsouth <- honey %>%
   filter(Region == "South")
 cortest.s <- cor.test(neonicstatsouth$totalprod, neonicstatsouth$nAllNeonic, method = "spearman", exact = FALSE)
-cortest.s
 
-
-#Making a data frame of statistical results
+#FRAMING THE STATISTICAL RESULTS
 Region <- c("Midwest", "West", "Northeast", "South")
-p.value <- c(cortest.mw$p.value, cortest.w$p.value, cortest.mw$p.value, cortest.s$p.value)
+p.value <- c(cortest.mw$p.value, cortest.w$p.value, 
+             cortest.mw$p.value, cortest.s$p.value)
 rho <- c(-0.1027632, 0.3549792, 0.3510381, 0.4034019)
 significance <- c("ns", "*", "*", "*")
 
 allneonic <- cbind(Region, p.value, rho, significance)
-allneonic <- data.frame(allneonic); allneonic
+Table1 <- data.frame(allneonic); Table1
 ```
 
+# 3.2 Type of Neonic
 According to the USGS data, there are fives types of neonics used in the US
 States, namely, clothianidin, imidacloprid, thiamethoxam, acetamiprid,
 thaicloprid. To know what neonic type significantly contributes to the changes
@@ -248,6 +233,7 @@ neonic.type.df <- cbind(Region, NeonicType, p.value, rho, significance)
 neonic.type.df <- as.data.frame(neonic.type.df)
 ```
 
+# 3.3. Year
 
 Total production of honey throughout 1991 to 2017 is visualized for four regions. Midwest shows the highest production throughout the years, while Northeast shows the lowest. Statistical analysis for any significant difference between years was impossible due to the absence of data from select states in each region which prevents pairwise comparison of repeated measures. However, the graph shows that despite the growing industry of Neonic production since 2003, total production of honey from bee colonies have been fluctuating in the Midwest and the West even before. Furthermore, Northeastern and Southern total production have been relatively steady for years. This could suggest that Neonic production does not necessarily induce an effect on total production of honey as a measure of the bee population. Other factors must be at play that maintains the production in the Northeast and the South, while there is unsteady decline in the Midwest and the West.
 Interestingly, the Midwest remains the highest producer of Neonics followed by the south. Why the midwest still remains the highest producer of honey despite the high production of Neonics could perhaps be explained by biological and geographical factors which are beyond the scope of the study.
